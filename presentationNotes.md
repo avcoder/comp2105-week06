@@ -402,7 +402,101 @@ $(document).ready(function() {
 });
 ```
 
-# Lab 6
+# Lab 6 jQuery Animation side nav with arrow
+
+- the main goal is to make this side menu bounce open and have the arrow turn around
+- notice the nav element has a class of slideOut which will be useful later on
+- notice header nav.slideOut:hover - using CSS alone by hovering over the nav it moves over 100px
+- code it
+- 1st step is including appropriate libraries, jquery, jqueryUI, Penner's easing
+
+## Step 5
+
+- let's begin there - you want to disable the hover functionality by removing the slideOut class on the nav via JS
+- good for progressive enhancement, so even if no JS, it still works
+- Q: so how would you do that in jQuery? A: removeclass
+- `$("nav").removeClass("slideOut");`
+
+## Step 6
+
+- we're going to declare a variable to keep track of whether of not the nav is open or closed
+
+## Step 7
+
+- Q: what element is the arrow? A: this anchor tag; Q: How do you want to target that?
+- `$("nav > a").click(function(e) {`
+- for now just put an alert to see if it's working
+
+## Step 8
+
+- normally when you click a link, the browser wants to go somewhere; to prevent that from happening you use
+- `e.preventDefault();`
+
+# Step pre-9
+
+- could say `if (is_navOpen === false)`
+- or a better way to say that `if (!is_navOpen)`
+
+# Step 9
+
+- Q: How are you going to slide it open? A: we can animate that nav to move right
+- `$('nav').animate({ left: '-100px'}, 300);`
+- let's experiment and see what happens if we say 0px, then try 400px
+- we've taken care of the nav opening which is great. Next is we want it to bounce as it opens, which involves the easing
+- since we've included Penner's easing library, we can say:
+- `$('nav').animate({ left: '-100px'}, 300, "easeOutElastic");`
+
+# Step 10
+
+- I want arrow to rotate 180deg once it finishes expanding
+- Notice we already have a class called .rotated; so once I add that class to this arrow, it should turn around
+- Experiment by manually putting that class in anchor tag to see if arrow turns; it does
+- So let's programmatically add that in AFTER that animation is done -- which means we're dealing with a callback
+
+```js
+$("nav").animate({ left: "-100px" }, 300, "easeOutElastic", function() {
+  // STEP 10: Add class to arrow once nav is done animating
+  $("nav > a").addClass("rotated");
+});
+```
+
+- Notice, there exists a transition statement already in CSS which should make the animation smooth
+- hmm, it's too quick, change .2s to 1s to exaggerate it
+
+# Step 11
+
+- is already done
+
+# Step 12
+
+- so far, open works, but does close work? No
+- so here we can continue the above if() structure
+
+```js
+} else {
+  $('nav').animate({ left: "100px" }, 300, "easeOutElastic"
+}
+
+```
+
+# Step 13
+
+- so far it doesn't work due to logic error
+- but in reality, the variable never changed, it's still false
+- so you could do this in one of 2 ways, either say in the if() section `is_navOpen = true`, else section `is_navOpen = false`
+- OR can say at bottom `is_navOpen = !is_navOpen;`
+
+# Step 14
+
+- last thing to do is make that arrow turn around
+- so we're going to do the same kind of thing where we'll need a callback
+
+```js
+.animate({ left: "-100px" }, 300, "easeOutElastic", function() {
+          // STEP 10: Add class to arrow once nav is done animating
+          $("nav a").removeClass("rotated");
+        });
+```
 
 ```js
 // STEP 4: Create document ready event handler
